@@ -1,0 +1,105 @@
+VHDL code: 
+library IEEE; 
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.NUMERIC_STD.ALL; 
+use IEEE.STD_LOGIC_arith.ALL; 
+use IEEE.STD_LOGIC_unsigned.ALL; 
+entity Mod25_Cntr is 
+ Port ( clk_in : in STD_LOGIC; 
+ Rst : in STD_LOGIC; 
+ En : in STD_LOGIC; 
+ LED : out STD_LOGIC_VECTOR (3 downto 0)); 
+end Mod25_Cntr; 
+architecture Behavioral of Mod25_Cntr is 
+signal counter : std_logic_vector(3 downto 0); 
+begin 
+ process(clk_in, rst) 
+ begin 
+ if rst='1' then 
+ counter <= "0000"; 
+elsif clk_in'event and clk_in='1' then 
+ if En = '1' then 
+ if counter = 10 then 
+ counter <= "0000"; 
+ else 
+ counter <= counter + 1; 
+ end if; 
+ end if; 
+ end if; 
+ end process; 
+ LED <= counter; 
+end Behavioral; 
+TestBench Code: 
+library IEEE; 
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.NUMERIC_STD.ALL; 
+entity tb_Mod25_Cntr is 
+end tb_Mod25_Cntr; 
+architecture Behavioral of tb_Mod25_Cntr is 
+    -- Component Declaration for the Unit Under Test (UUT) 
+    component Mod25_Cntr 
+        Port ( clk_in : in  STD_LOGIC; 
+            Rst :in  STD_LOGIC; 
+            En  : in  STD_LOGIC; 
+            LED : out STD_LOGIC_VECTOR (3 downto 0); 
+    end component; 
+    -- Signals 
+    signal clk_in : std_logic := '0'; 
+    signal Rst    : std_logic := '0'; 
+    signal En     : std_logic := '0'; 
+    signal LED    : std_logic_vector(3 downto 0); 
+ 
+    constant clk_period : time := 20 ns; 
+ 
+begin 
+    -- Instantiate the Unit Under Test (UUT) 
+    uut: Mod25_Cntr 
+        Port map ( 
+            clk_in => clk_in, 
+            Rst    => Rst, 
+            En     => En, 
+            LED    => LED); 
+    clk_process : process 
+    begin 
+        while true loop 
+            clk_in <= '0'; 
+            wait for clk_period/2; 
+            clk_in <= '1'; 
+            wait for clk_period/2; 
+        end loop; 
+    end process; 
+    stim_proc: process 
+    begin 
+        -- Initial reset 
+        Rst <= '1'; 
+        En  <= '0'; 
+        wait for 50 ns; 
+        Rst <= '0'; 
+        -- Enable counting 
+        En <= '1'; 
+        wait for 400 ns; 
+        -- Disable counting 
+        En <= '0'; 
+        wait for 100 ns; 
+        -- Apply reset again 
+        Rst <= '1'; 
+        wait for 40 ns; 
+        Rst <= '0'; 
+        wait for 200 ns; 
+        wait; 
+    end process; 
+end Behavioral; 
+ 
+ 
+ 
+Constraint UCF File: 
+NET "clk_in" CLOCK_DEDICATED_ROUTE = FALSE; 
+ 
+net "clk_in" LOC = "P6"; 
+net "rst" LOC ="P58"; 
+net "En" LOC ="P64"; 
+net "LED<0>" LOC = "P2"; 
+net "LED<1>" LOC = "P142"; 
+net "LED<2>" LOC = "P138"; 
+net "LED<3>" LOC = "P134"; 
+net "LED<4>" LOC = "P124";
