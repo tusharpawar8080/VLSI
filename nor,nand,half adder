@@ -1,0 +1,27 @@
+# VLSI Design Practicals
+
+This repository contains schematic and stick diagram layouts for basic VLSI digital circuits.
+
+## 1. NOR Gate
+- **Tool Used:** Microwind/DSCH
+- **Design:** Two PMOS in parallel, two NMOS in series
+- **Output:** Logic high only when both inputs are low
+- **Files:**
+  - `nor_schematic.png`
+  - `nor_stick_diagram.png`
+
+## 2. NAND Gate
+- **Tool Used:** Microwind/DSCH
+- **Design:** Two PMOS in series, two NMOS in parallel
+- **Output:** Logic low only when both inputs are high
+- **Files:**
+  - `nand_schematic.png`
+  - `nand_stick_diagram.png`
+
+## 3. Half Adder
+- **Tool Used:** Cadence/Microwind
+- **Design:** XOR and AND gates combined
+- **Output:** Sum and Carry signals
+- **Files:**
+  - `halfadder_schematic.png`
+  - `halfadder_stick_diagram.png`
